@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "John",
+      "last": "Doe"
+    },
+    {
+      "id": "2",
+      "name": "Maria",
+      "last": "Garcia"
+    },
+    {
+      "id": "3",
+      "name": "Carlos",
+      "last": "Rodriguez"
+    },
+    {
+      "id": "4",
+      "name": "Ana",
+      "last": "Martinez"
+    },
+    {
+      "id": "5",
+      "name": "Luis",
+      "last": "Hernandez"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Laptop",
+      "price": 899.99,
+      "category": "Electronics"
+    },
+    {
+      "id": "2",
+      "name": "Smartphone",
+      "price": 499.99,
+      "category": "Electronics"
+    },
+    {
+      "id": "3",
+      "name": "Headphones",
+      "price": 79.99,
+      "category": "Accessories"
+    },
+    {
+      "id": "4",
+      "name": "Monitor",
+      "price": 249.99,
+      "category": "Electronics"
+    },
+    {
+      "id": "5",
+      "name": "Keyboard",
+      "price": 59.99,
+      "category": "Accessories"
+    }
+  ]
+}
