@@ -74,6 +74,21 @@
 //     .catch(error => alert(error))
 // }
 
+const findUsers = async () => {
+    const config = {
+        method: "GET", // Obtener
+    };
+    const response = await fetch(`http://localhost:5600/users`, config);
+    const result = await response.json();
+    return result;
+}
+let seeUsers= confirm("¿Deseas visualizar todos los usuarios?");
+if(seeUsers){
+    findUsers()
+    .then(result => console.table(result))
+    .catch(error => alert(error))
+}
+
 // Fetch = traer
 // Get = Obtener
 // Post = enviar
