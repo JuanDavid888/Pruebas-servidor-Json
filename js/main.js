@@ -170,6 +170,31 @@ const formularyEdit = async () => {
     }
 }
 
+const removeUser = async(data) => {
+    const {id} = data
+    const config = {
+        method: "DELETE", // Eliminar
+    }
+    const response = await fetch(`http://localhost:5600/users/${id}`, config);
+    const result = await response.json();
+    return result;
+}
+const formularyRemove = async () => {
+    const users = await findUsers(); // Obtiene datos de los usuarios guardados
+    const userIds = users.map(user => user.id); // Recorre  usuarios y verifica ids
+    const data = {}
+
+    while(confirm("¿Desea eliminar un usuario?")){
+        data.id = prompt("Ingrese el id del usuario").trim();
+        if (data.id !== "" && userIds.includes(data.id)) break;
+        alert("El ID ingresado no existe");
+    }
+
+    removeUser(data)
+    .then(result => alert(JSON.stringify(result)))
+    .catch(error => alert(error))
+}
+
 // Fetch = traer
 // Get = Obtener
 // Post = enviar
