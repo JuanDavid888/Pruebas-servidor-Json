@@ -2,6 +2,7 @@
 
 // Productos
 
+// Visualizar productos
 const findProduct = async(data) => {
     const url = new URL("https://67e686886530dbd311105634.mockapi.io") // Forma de traer la  url
     url.pathname = "/products" // Entrar a la ruta que se necesita
@@ -22,6 +23,36 @@ const viewProducts = async () => {
     }
     else if(!seeProducts){
         alert("Acción cancelada")
+    }
+}
+
+// Guardar producto
+const saveProduct = async (data) => {
+    const url = new URL("https://67e686886530dbd311105634.mockapi.io")
+    url.pathname = "/products"
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    const config = {
+        method: "POST", // Guardar
+        headers: header,
+        body: JSON.stringify(data)
+    };
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const formularyAddProduct = async () => {
+    while (confirm("¿Desea insertar un producto?")){
+        const data = {
+            name: prompt("Ingrese el nombre"),
+            price: Number(prompt("Ingrese el precio")),
+            category: prompt("Ingrese la categoría")
+        }
+
+    saveProduct(data)
+    .then(result => alert(JSON.stringify(result)))
+    .catch(error => alert(error))
     }
 }
 
