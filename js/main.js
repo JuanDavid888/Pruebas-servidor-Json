@@ -90,6 +90,39 @@ const formularyEditUser = async () => {
 
 }
 
+// Eliminar usuario
+const removeUser = async(data) => {
+    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/users/${data.id}`)
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    const config = {
+        method: "DELETE", // Eliminar
+        headers: header,
+    }
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const formularyRemoveUser = async () => {
+    const data = {}
+
+    while(true){
+        let deleteUser = confirm("¿Desea eliminar un usuario?");
+        if(deleteUser){
+            data.id = prompt("Ingrese el id del usuario").trim();
+            if (data.id !== "") break;
+            alert("El ID ingresado no existe")}
+        else{
+            alert("Acción cancelada")
+        }
+    }
+    
+    removeUser(data)
+    .then(result => alert(JSON.stringify(result)))
+    .catch(error => alert(error))
+}
+
 // Fetch = traer
 // Get = Obtener
 // Post = enviar
