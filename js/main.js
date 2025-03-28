@@ -1,5 +1,30 @@
 // Uso de servidor remoto
 
+// Productos
+
+const findProduct = async(data) => {
+    const url = new URL("https://67e686886530dbd311105634.mockapi.io") // Forma de traer la  url
+    url.pathname = "/products" // Entrar a la ruta que se necesita
+    const config = {
+        method: "GET", // Obtener los datos
+        body: JSON.stringify(data)
+    }
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const viewProducts = async () => {
+    let seeProducts = confirm("¿Deseas visualizar todos los productos?");
+    if(seeProducts){
+        findProduct()
+        .then(result => console.table(result))
+        .catch(error => alert(error))
+    }
+    else if(!seeProducts){
+        alert("Acción cancelada")
+    }
+}
+
 // Usuarios
 
 // Visualizar usuarios
