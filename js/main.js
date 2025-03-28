@@ -26,6 +26,35 @@ const viewUsers = async () => {
     }
 }
 
+// Guardar usuario
+const saveUser = async (data) => {
+    const url = new URL("https://67e686886530dbd311105634.mockapi.io")
+    url.pathname = "/users"
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    const config = {
+        method: "POST", // Guardar
+        headers: header,
+        body: JSON.stringify(data)
+    };
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const formularyAddUser = async () => {
+    while (confirm("¿Desea insertar un usuario?")){
+        const data = {
+            name: prompt("Ingrese el nombre"),
+            last: prompt("Ingrese el apellido")
+        }
+
+    saveUser(data)
+    .then(result => alert(JSON.stringify(result)))
+    .catch(error => alert(error))
+    }
+}
+
 // Fetch = traer
 // Get = Obtener
 // Post = enviar
