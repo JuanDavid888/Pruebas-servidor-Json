@@ -55,6 +55,41 @@ const formularyAddUser = async () => {
     }
 }
 
+// Editar usuario
+const editUser = async(data) => {
+    const {id, ...dataUpdate} = data
+    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/users/${id}`)
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    const config = {
+        method: "PUT", // Actualizar
+        headers: header,
+        body: JSON.stringify(dataUpdate)
+    }
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const formularyEditUser = async () => {
+    while(confirm("¿Desea actualizar un usuario?")){
+        const data = {}
+
+        data.id = prompt("Ingrese el id del usuario")
+        data.name = confirm("¿Desea actualizar el nombre?")? prompt("Ingrese el nuevo nombre") : undefined
+        data.last = confirm("¿Desea actualizar el apellido?")? prompt("Ingrese el nuevo apellido") : undefined
+
+        if (data.name || data.last) {
+            editUser(data)
+                .then(result => alert(JSON.stringify(result)))
+                .catch(error => alert(error));
+        } else {
+            alert("No se realizaron cambios.");
+        }
+    }
+
+}
+
 // Fetch = traer
 // Get = Obtener
 // Post = enviar
