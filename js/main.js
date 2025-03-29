@@ -37,16 +37,20 @@ const FindProductById = async(id) => {
     return result;
 }
 const viewProductById = async () => {
+    const products = await findProduct()
+    const ids = products.map(product => product.id)
+
     let seeProduct = confirm("¿Deseas visualizar un producto por su id?");
     if(seeProduct){
-        const id = prompt("Ingrese el id del producto")
-        FindProductById(id)
+        while(true){
+            const id = prompt("Ingrese el id del producto")
+            if (id !== "" && !isNaN(id) && ids.includes(id)) break;
+            alert("El ID ingresado no existe")
+        }
+    }
+    FindProductById(id)
         .then(result => console.table(result))
         .catch(error => alert(error))
-    }
-    else if(!seeProduct){
-        alert("Acción cancelada")
-    }
 }
 
 // Guardar producto
@@ -66,11 +70,23 @@ const saveProduct = async (data) => {
     return result;
 }
 const formularyAddProduct = async () => {
+    const data = {}
+
     while (confirm("¿Desea insertar un producto?")){
-        const data = {
-            name: prompt("Ingrese el nombre"),
-            price: Number(prompt("Ingrese el precio")),
-            category: prompt("Ingrese la categoría")
+        while(true){
+            data.name = prompt("Ingrese el nombre").trim().toLowerCase().split(" ").map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(" ");
+            if (data.name !== "" && !/^[0-9]+$/.test(data.name)) break;
+            alert("El nombre ingresado es inválido, intente otra vez")
+        }
+        while(true){
+            data.price = Number(prompt("Ingrese el precio"));
+            if (data.price !== "" && !isNaN(data.price)) break;
+            alert("El precio ingresado es inválido, intente otra vez")
+        }
+        while(true){
+            data.category = prompt("Ingrese la categoría").trim().toLowerCase().split(" ").map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(" ");
+            if (data.category !== "" && !/^[0-9]+$/.test(data.category)) break;
+            alert("La categoría ingresada es inválida, intente otra vez")
         }
 
     saveProduct(data)
@@ -98,26 +114,45 @@ const editProduct = async(data) => {
 const formularyEditProduct = async () => {
     while(confirm("¿Desea actualizar un producto?")){
         const data = {}
+        const products = await findProduct()
+        const ids = products.map(product => product.id)
 
-        data.id = prompt("Ingrese el id del producto")
-        data.name = confirm("¿Desea actualizar el nombre?")? prompt("Ingrese el nuevo nombre") : undefined
-        data.price = confirm("¿Desea actualizar el precio?")? Number(prompt("Ingrese el nuevo precio")) : undefined
-        data.category = confirm("¿Desea actualizar la categoría?")? prompt("Ingrese la nueva categoría") : undefined
-
-        if (data.name || data.price || data.category) {
-            editProduct(data)
-                .then(result => alert(JSON.stringify(result)))
-                .catch(error => alert(error));
-        } else {
-            alert("No se realizaron cambios.");
+        while (true) {
+            data.id = (prompt("Ingrese el ID"));
+            if (data.id !== "" && ids.includes(data.id)) break;
+            alert("El ID debe existir");
         }
+        while (true) {
+            data.name = confirm("¿Desea actualizar el nombre?")? prompt("Ingrese el nuevo nombre").trim().toLowerCase().split(" ").map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(" ") : undefined
+            if (data.name !== "" && isNaN(data.name) && !/^[0-9]+$/.test(data.name)) break;
+            alert("El nombre ingresado no es válido.");
+        }
+        let updatePrice = confirm("¿Desea actualizar el precio?");
+        if (updatePrice) {
+            while (true) {
+                data.price = Number(prompt("Ingrese el nuevo precio"));
+                if (data.price !== "" && !isNaN(data.price)) {
+                    break;
+                }
+                alert("El precio ingresado no es válido.");
+            }
+        }
+        while (true) {
+            data.category = confirm("¿Desea actualizar la categoría?")? prompt("Ingrese la nueva categoría").trim().toLowerCase().split(" ").map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(" ") : undefined
+            if (data.category !== "" && isNaN(data.category) && !/^[0-9]+$/.test(data.category)) break;
+            alert("La categoría ingresada no es válida.");
+        }
+    
+        editProduct(data)
+        .then(result => alert(JSON.stringify(result)))
+        .catch(error => alert(error))
     }
-
 }
 
 // Eliminar producto
 const removeProduct = async(data) => {
-    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/products/${data.id}`)
+    const {id} = data
+    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/products/${id}`)
     const header = new Headers();
     header.append("Content-Type", "application/json");
 
@@ -130,23 +165,25 @@ const removeProduct = async(data) => {
     return result;
 }
 const formularyRemoveProduct = async () => {
-    const data = {}
-
-    while(true){
-        let deleteProduct = confirm("¿Desea eliminar un producto?");
-        if(deleteProduct){
-            data.id = prompt("Ingrese el id del producto").trim();
-            if (data.id !== "") break;
-            alert("El ID ingresado no existe")}
-        else{
-            alert("Acción cancelada")
-        }
-    }
+    const products = await findProduct();
+    const ids = products.map((product) => product.id);
+    const data = {};
     
+    while (true) {
+        let deleteProduct = confirm("¿Desea eliminar un producto?");
+        if (!deleteProduct) {
+            alert("Acción cancelada");
+            break;
+        }
+        data.id = prompt("Ingrese el id del producto");
+        if (data.id !== "" && !isNaN(data.id) && ids.includes(data.id)) break;
+        alert("El ID ingresado no existe");
+    }
+
     removeProduct(data)
-    .then(result => alert(JSON.stringify(result)))
-    .catch(error => alert(error))
-}
+        .then((result) => alert(JSON.stringify(result)))
+        .catch((error) => alert(error));
+};
 
 // Usuarios
 
