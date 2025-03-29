@@ -174,6 +174,29 @@ const viewUsers = async () => {
     }
 }
 
+// Ver usuario por id
+const FindUserById = async(id) => {
+    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/users/${id}`)
+    const config = {
+        method: "GET", // Obtener los datos
+    }
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const viewUserById = async () => {
+    let seeUser = confirm("¿Deseas visualizar un usuario por su id?");
+    if(seeUser){
+        const id = prompt("Ingrese el id del usuario")
+        FindUserById(id)
+        .then(result => console.table(result))
+        .catch(error => alert(error))
+    }
+    else if(!seeUser){
+        alert("Acción cancelada")
+    }
+}
+
 // Guardar usuario
 const saveUser = async (data) => {
     const url = new URL("https://67e686886530dbd311105634.mockapi.io")
