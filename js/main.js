@@ -92,6 +92,39 @@ const formularyEditProduct = async () => {
 
 }
 
+// Eliminar producto
+const removeProduct = async(data) => {
+    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/products/${data.id}`)
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    const config = {
+        method: "DELETE", // Eliminar
+        headers: header,
+    }
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const formularyRemoveProduct = async () => {
+    const data = {}
+
+    while(true){
+        let deleteProduct = confirm("¿Desea eliminar un producto?");
+        if(deleteProduct){
+            data.id = prompt("Ingrese el id del producto").trim();
+            if (data.id !== "") break;
+            alert("El ID ingresado no existe")}
+        else{
+            alert("Acción cancelada")
+        }
+    }
+    
+    removeProduct(data)
+    .then(result => alert(JSON.stringify(result)))
+    .catch(error => alert(error))
+}
+
 // Usuarios
 
 // Visualizar usuarios
