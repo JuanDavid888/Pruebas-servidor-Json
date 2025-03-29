@@ -26,6 +26,29 @@ const viewProducts = async () => {
     }
 }
 
+// Ver producto por id
+const FindProductById = async(id) => {
+    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/products/${id}`)
+    const config = {
+        method: "GET", // Obtener los datos
+    }
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const viewProductById = async () => {
+    let seeProduct = confirm("¿Deseas visualizar un producto por su id?");
+    if(seeProduct){
+        const id = prompt("Ingrese el id del producto")
+        FindProductById(id)
+        .then(result => console.table(result))
+        .catch(error => alert(error))
+    }
+    else if(!seeProduct){
+        alert("Acción cancelada")
+    }
+}
+
 // Guardar producto
 const saveProduct = async (data) => {
     const url = new URL("https://67e686886530dbd311105634.mockapi.io")
