@@ -217,7 +217,7 @@ const viewUsers = async () => {
 }
 
 // Ver usuario por id
-const FindUserById = async(data) => {
+const findUserById = async(data) => {
     const {id} = data
     const url = new URL(`https://67e686886530dbd311105634.mockapi.io/users/${id}`)
     const config = {
@@ -239,7 +239,7 @@ const viewUserById = async () => {
             if (data.id !== "" && !isNaN(data.id) && ids.includes(data.id)) break;
             alert("El ID ingresado no existe")
         }
-        FindUserById(data)
+        findUserById(data)
         .then(result => console.table(result))
         .catch(error => alert(error))
     }
@@ -365,6 +365,123 @@ const formularyRemoveUser = async () => {
     .then(result => alert(JSON.stringify(result)))
     .catch(error => alert(error))
 }
+
+// Limpiar consola
+const clearConsole = async () => {
+    console.clear()
+}
+
+const mainMenu = async () => {
+    while (true) {
+        let option = prompt(
+            "Menú Principal:\n" +
+            "1. Gestionar Productos\n" +
+            "2. Gestionar Usuarios\n" +
+            "3. Limpiar consola\n" +
+            "4. Salir"
+        );
+        
+        switch (option) {
+            case "1":
+                await productMenu();
+                break;
+            case "2":
+                await userMenu();
+                break;
+            case "3": 
+                await clearConsole();
+                break;
+            case "4":
+                alert("Saliendo del sistema...");
+                return;
+            default:
+                alert("Opción inválida, intente nuevamente.");
+        }
+    }
+};
+
+const productMenu = async () => {
+    while (true) {
+        let option = prompt(
+            "Menú de Productos:\n" +
+            "1. Ver todos los productos\n" +
+            "2. Buscar producto por ID\n" +
+            "3. Agregar producto\n" +
+            "4. Editar producto\n" +
+            "5. Eliminar producto\n" +
+            "6. Limpiar consola\n" +
+            "7. Volver al menú principal"
+        );
+        
+        switch (option) {
+            case "1":
+                await viewProducts();
+                break;
+            case "2":
+                await viewProductById();
+                break;
+            case "3":
+                await formularyAddProduct();
+                break;
+            case "4":
+                await formularyEditProduct();
+                break;
+            case "5":
+                await formularyRemoveProduct();
+                break;
+            case "6": 
+                await clearConsole();
+                break;
+            case "7":
+                return;
+            default:
+                alert("Opción inválida, intente nuevamente.");
+        }
+    }
+};
+
+const userMenu = async () => {
+    while (true) {
+        let option = prompt(
+            "Menú de Usuarios:\n" +
+            "1. Ver todos los usuarios\n" +
+            "2. Buscar usuario por ID\n" +
+            "3. Agregar usuario\n" +
+            "4. Editar usuario\n" +
+            "5. Eliminar usuario\n" +
+            "6. Limpiar consola\n" +
+            "7. Volver al menú principal"
+        );
+        
+        switch (option) {
+            case "1":
+                await viewUsers();
+                break;
+            case "2":
+                await viewUserById();
+                break;
+            case "3":
+                await formularyAddUser();
+                break;
+            case "4":
+                await formularyEditUser();
+                break;
+            case "5":
+                await formularyRemoveUser();
+                break;
+            case "6": 
+                await clearConsole();
+                break;
+            case "7":
+                return;
+            default:
+                alert("Opción inválida, intente nuevamente.");
+        }
+    }
+};
+
+// Para que sirve una opción, se debe colocar la opción y luego darle a la opción 2 para que se realize, ejemplo: si quiere ver todos los productos, se debe escribir "1" y luego "2" para mostrarlos en la consola
+mainMenu();
 
 // Fetch = traer
 // Get = Obtener
