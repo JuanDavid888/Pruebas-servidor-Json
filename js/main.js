@@ -56,6 +56,42 @@ const formularyAddProduct = async () => {
     }
 }
 
+// Editar producto
+const editProduct = async(data) => {
+    const {id, ...dataUpdate} = data
+    const url = new URL(`https://67e686886530dbd311105634.mockapi.io/products/${id}`)
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    const config = {
+        method: "PUT", // Actualizar
+        headers: header,
+        body: JSON.stringify(dataUpdate)
+    }
+    const response = await fetch(url.toString(), config);
+    const result = await response.json();
+    return result;
+}
+const formularyEditProduct = async () => {
+    while(confirm("¿Desea actualizar un producto?")){
+        const data = {}
+
+        data.id = prompt("Ingrese el id del producto")
+        data.name = confirm("¿Desea actualizar el nombre?")? prompt("Ingrese el nuevo nombre") : undefined
+        data.price = confirm("¿Desea actualizar el precio?")? Number(prompt("Ingrese el nuevo precio")) : undefined
+        data.category = confirm("¿Desea actualizar la categoría?")? prompt("Ingrese la nueva categoría") : undefined
+
+        if (data.name || data.price || data.category) {
+            editProduct(data)
+                .then(result => alert(JSON.stringify(result)))
+                .catch(error => alert(error));
+        } else {
+            alert("No se realizaron cambios.");
+        }
+    }
+
+}
+
 // Usuarios
 
 // Visualizar usuarios
